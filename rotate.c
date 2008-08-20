@@ -42,8 +42,7 @@ void set_rotation (int rotation) {
     sleep(2);
 }
 
-int process_packet (FILE * eventfp)
-{
+int process_packet (FILE *eventfp) {
     int state;
     int curline;
     unsigned short buffer[8 * 7];
@@ -88,17 +87,15 @@ int process_packet (FILE * eventfp)
              * 3: record Z (jump to 0 on error), process packet, reset
              */
         case 0:
-            if (buffer[curline + 4] == 0x0 && buffer[curline + 5] == 0x0)
-            {
+            if (buffer[curline + 4] == 0x0 && buffer[curline + 5] == 0x0) {
                 x = y = z = 0;
                 state = 1;
             }
             break;
         case 1:
-            if (!(buffer[curline + 4] == 0x2 && buffer[curline + 5] == 0x0))
-            {
-                printf ("EXPECTED: 2 0: %x %x\n",
-                        buffer[curline + 4], buffer[curline + 5]);
+            if (!(buffer[curline + 4] == 0x2 && buffer[curline + 5] == 0x0)) {
+                printf("EXPECTED: 2 0: %x %x\n",
+                       buffer[curline + 4], buffer[curline + 5]);
                 state = 0;
                 break;
             }
@@ -106,10 +103,9 @@ int process_packet (FILE * eventfp)
             state++;
             break;
         case 2:
-            if (!(buffer[curline + 4] == 0x2 && buffer[curline + 5] == 0x1))
-            {
-                printf ("EXPECTED: 2 1: %x %x\n",
-                        buffer[curline + 4], buffer[curline + 5]);
+            if (!(buffer[curline + 4] == 0x2 && buffer[curline + 5] == 0x1)) {
+                printf("EXPECTED: 2 1: %x %x\n",
+                       buffer[curline + 4], buffer[curline + 5]);
                 state = 0;
                 break;
             }
@@ -117,10 +113,9 @@ int process_packet (FILE * eventfp)
             state++;
             break;
         case 3:
-            if (!(buffer[curline + 4] == 0x2 && buffer[curline + 5] == 0x2))
-            {
-                printf ("EXPECTED: 2 2: %x %x\n",
-                        buffer[curline + 4], buffer[curline + 5]);
+            if (!(buffer[curline + 4] == 0x2 && buffer[curline + 5] == 0x2)) {
+                printf("EXPECTED: 2 2: %x %x\n",
+                       buffer[curline + 4], buffer[curline + 5]);
                 state = 0;
                 break;
             }
@@ -161,15 +156,13 @@ int process_packet (FILE * eventfp)
 
 }
 
-int
-main (int argc, char *argv[])
-{
+int main (int argc, char *argv[]) {
     FILE *eventfp;
     int rotation = -1;
     int oldrotation = -1;
 
     /* Does this always hold on OpenMoko distros? */
-    putenv ("DISPLAY=:0");
+    putenv("DISPLAY=:0");
 
     eventfp = fopen(EVENT_PATH, "r");
     if (eventfp == NULL) {
@@ -177,8 +170,7 @@ main (int argc, char *argv[])
         exit(1);
     }
 
-    while (1)
-    {
+    while (1) {
         sleep(1);
         if (rotation != -1)
             oldrotation = rotation;
